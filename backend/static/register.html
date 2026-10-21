@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация — eTir</title>
+  <link rel="stylesheet" href="/static/theme.css">
+  <link rel="stylesheet" href="/static/register.css">
+  <script src="/static/register.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <div class="auth-shell">
+      <header class="auth-header">
+        <p class="eyebrow">eTir</p>
+        <h1>Регистрация</h1>
+        <p class="text-muted">Создайте аккаунт и выберите проект.</p>
+      </header>
+
+      <section class="card auth-card" id="form-panel">
+        <div class="form-alert" id="form-error" role="alert" hidden></div>
+
+        <form id="register-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Имя</label>
+              <input type="text" id="fname" name="fname" autocomplete="given-name" required maxlength="255">
+            </div>
+            <div class="form-group">
+              <label for="lname">Фамилия</label>
+              <input type="text" id="lname" name="lname" autocomplete="family-name" required maxlength="255">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required maxlength="255">
+          </div>
+
+          <div class="form-group">
+            <label for="project_id">Проект</label>
+            <select id="project_id" name="project_id" required>
+              <option value="">Загрузка проектов…</option>
+            </select>
+            <p class="form-hint" id="project-hint">Проект определяет, к какой команде вы присоединитесь.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8" maxlength="128">
+            <p class="form-hint">Не менее 8 символов.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm_password">Повторите пароль</label>
+            <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" required minlength="8" maxlength="128">
+          </div>
+
+          <button type="submit" class="btn auth-submit" id="submit-button">Создать аккаунт</button>
+        </form>
+      </section>
+
+      <section class="success-panel" id="success-panel" hidden aria-live="polite">
+        <p class="eyebrow">Готово</p>
+        <h2>Аккаунт создан</h2>
+        <p class="text-muted">Регистрация для <strong id="success-email"></strong> завершена.</p>
+        <a class="btn btn-outline" href="/">На главную</a>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -58,6 +58,8 @@ class User(BaseModel):
     )
     fname = CharField(max_length=255)
     lname = CharField(max_length=255)
+    email = CharField(max_length=255, unique=True, index=True)
+    password_hash = CharField(max_length=255)
 
     class Meta:
         table_name = "user"

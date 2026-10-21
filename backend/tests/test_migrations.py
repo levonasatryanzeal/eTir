@@ -99,3 +99,37 @@ def test_user_migration_creates_user_table(tmp_path):
     foreign_keys = db.get_foreign_keys("user")
     assert any(fk.column == "project_id" for fk in foreign_keys)
     db.close()
+
+
+def test_user_credentials_migration_adds_email_and_password_hash(tmp_path):
+    db = SqliteDatabase(str(tmp_path / "test.db"))
+    migrations = [
+        migration
+        for migration in discover_migrations()
+        if migration.name in {"0002_project", "0003_user", "0004_user_credentials"}
+    ]
+
+    apply_migrations(db, migrations)
+
+    columns = {column.name for column in db.get_columns("user")}
+    assert {"email", "password_hash"} <= columns
+    db.close()
+
+
+def test_seed_migration_creates_qa1_project(tmp_path):
+    db = SqliteDatabase(str(tmp_path / "test.db"))
+    migrations = [
+        migration
+        for migration in discover_migrations()
+        if migration.name in {"0002_project", "0005_seed_qa1_project"}
+    ]
+
+    apply_migrations(db, migrations)
+
+    rows = list(
+        db.execute_sql(
+            "SELECT project_name, project_status, users_count FROM project"
+        )
+    )
+    assert rows == [("qa1", "active", 0)]
+    db.close()

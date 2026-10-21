@@ -69,6 +69,8 @@ def test_user_model_matches_required_schema():
         "project_id",
         "fname",
         "lname",
+        "email",
+        "password_hash",
     }
 
     user_id = User._meta.fields["user_id"]
@@ -86,3 +88,12 @@ def test_user_model_matches_required_schema():
     assert User._meta.fields["fname"].max_length == 255
     assert isinstance(User._meta.fields["lname"], CharField)
     assert User._meta.fields["lname"].max_length == 255
+
+    email = User._meta.fields["email"]
+    assert isinstance(email, CharField)
+    assert email.max_length == 255
+    assert email.unique is True
+
+    password_hash = User._meta.fields["password_hash"]
+    assert isinstance(password_hash, CharField)
+    assert password_hash.max_length == 255
