@@ -81,3 +81,21 @@ def test_project_migration_creates_project_table(tmp_path):
         "users_count",
     }
     db.close()
+
+
+def test_user_migration_creates_user_table(tmp_path):
+    db = SqliteDatabase(str(tmp_path / "test.db"))
+    migrations = [
+        migration
+        for migration in discover_migrations()
+        if migration.name in {"0002_project", "0003_user"}
+    ]
+
+    apply_migrations(db, migrations)
+
+    assert "user" in db.get_tables()
+    columns = {column.name for column in db.get_columns("user")}
+    assert columns == {"user_id", "project_id", "fname", "lname"}
+    foreign_keys = db.get_foreign_keys("user")
+    assert any(fk.column == "project_id" for fk in foreign_keys)
+    db.close()

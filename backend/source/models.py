@@ -1,4 +1,11 @@
-from peewee import AutoField, CharField, Check, IntegerField, Model
+from peewee import (
+    AutoField,
+    CharField,
+    Check,
+    ForeignKeyField,
+    IntegerField,
+    Model,
+)
 
 from source.database import db
 
@@ -38,3 +45,19 @@ class Project(BaseModel):
 
     class Meta:
         table_name = "project"
+
+
+class User(BaseModel):
+    user_id = AutoField(primary_key=True)
+    project_id = ForeignKeyField(
+        Project,
+        field=Project.project_id,
+        column_name="project_id",
+        backref="users",
+        on_delete="CASCADE",
+    )
+    fname = CharField(max_length=255)
+    lname = CharField(max_length=255)
+
+    class Meta:
+        table_name = "user"
